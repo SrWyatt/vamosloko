@@ -1,1 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lokomotiv El Salvador</title>
+    <link rel="stylesheet" href="style.css?v=5">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-side">
+            <button class="hamburger-btn" id="menu-btn" aria-label="Menu">
+                <span class="svg-icon icon-menu"></span>
+            </button>
+        </div>
+        <div class="nav-center" id="logo-btn" style="cursor: pointer;">#VAMOSLOKO</div>
+        <div class="nav-side"></div>
+    </nav>
 
+    <div class="dropdown-menu" id="dropdown-menu">
+        <a href="/" class="nav-link">Inicio</a>
+        <a href="/estado-del-equipo" class="nav-link">Estado del equipo</a>
+        <a href="/sobre-mi" class="nav-link">Sobre mí</a>
+        <a href="/contacto" class="nav-link">Redes</a>
+    </div>
+
+    <header class="main-header" id="main-header">
+        <h1>El Loko</h1>
+    </header>
+
+    <div id="view-home" class="view-section active">
+        <div class="search-section">
+            <div class="search-container">
+                <input type="text" id="search-input" placeholder="BUSCAR POR TÍTULO O ID (EJ: 001)...">
+                <button type="button" id="search-btn" aria-label="Buscar">
+                    <span class="svg-icon icon-search"></span>
+                </button>
+            </div>
+        </div>
+
+        <div class="layout-container">
+            <main class="main-content">
+                <section class="recent-posts">
+                    <h2>ÚLTIMAS PUBLICACIONES</h2>
+                    <div class="posts-list" id="posts-container"></div>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <div id="view-post" class="view-section">
+        <div class="post-layout-container">
+            <div class="post-header-full">
+                <div class="post-header-info">
+                    <span id="single-post-id"></span>
+                    <span id="single-post-date"></span>
+                </div>
+                <h1 id="single-post-title"></h1>
+                <div class="single-post-image" id="single-post-image-container"></div>
+            </div>
+            
+            <div class="post-body-layout">
+                <article class="single-post-body" id="single-post-body"></article>
+                
+                <aside class="post-sidebar">
+                    <div class="sidebar-block">
+                        <h3>HISTORIAL</h3>
+                        <div id="history-accordion" class="history-accordion"></div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </div>
+
+    <div id="view-page" class="view-section">
+        <div class="page-layout-container">
+            <h1 id="page-title"></h1>
+            <div class="page-body" id="page-body"></div>
+        </div>
+    </div>
+
+    <footer class="main-footer">
+        <div class="footer-social">
+            <a href="https://x.com/zmey316" target="_blank" class="social-btn" id="btn-x" aria-label="X (Twitter)">
+                <span class="svg-icon icon-social icon-x"></span>
+            </a>
+            <a href="https://www.instagram.com/lokomotivsv/" target="_blank" class="social-btn" id="btn-ig" aria-label="Instagram">
+                <span class="svg-icon icon-social icon-ig"></span>
+            </a>
+        </div>
+        <p>COPYRIGHT 2026 EL LOKO</p>
+        <p style="font-size: 0.8rem; margin-top: 10px; color: #348d8b;">CONTACTO: TU-CORREO@EJEMPLO.COM | TEL: +503 0000-0000</p>
+    </footer>
+
+    <button class="scroll-to-top" id="scroll-to-top" aria-label="Volver arriba">
+        <span class="svg-icon icon-arrow-up"></span>
+    </button>
+
+    <script src="script.js?v=5"></script>
+</body>
+</html>
