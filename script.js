@@ -88,7 +88,6 @@ function calculateTimezones(dateStr, timeStr) {
     }
 }
 
-// Interfaz e interacciones básicas
 menuBtn.addEventListener('click', () => { dropdownMenu.classList.toggle('active'); });
 
 document.querySelectorAll('.nav-link').forEach(link => {
@@ -97,7 +96,6 @@ document.querySelectorAll('.nav-link').forEach(link => {
     });
 });
 
-// ESCUCHADOR PRINCIPAL DE RUTAS POR HASH
 window.addEventListener('hashchange', handleRoute);
 
 function switchView(viewName) {
@@ -178,7 +176,6 @@ async function loadPosts() {
 
     buildHistorySidebar();
     
-    // Al cargar la página, fuerza a leer la URL actual y cargar la vista correcta
     handleRoute();
 }
 
