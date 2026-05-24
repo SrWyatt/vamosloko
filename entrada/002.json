@@ -1,0 +1,22 @@
+{
+    "id_str": "002",
+    "title": "Bienvenidos a mi plataforma",
+    "portada": "https://upload.wikimedia.org/wikipedia/commons/1/1e/Lokomotiv_Stadium.jpg",
+    "desc": "Esta es la primer entrada en la página de lokomotiv el salvador",
+    "date": "24/5/2026",
+    "time": "04:52 p. m.",
+    "body": [
+        {
+            "type": "subtitulo",
+            "content": "Esta es la entrada 1"
+        },
+        {
+            "type": "parrafo",
+            "content": "Creo necesario crear esto como una forma de comunicacion"
+        },
+        {
+            "type": "imagen",
+            "content": "https://www.tudn.com/_next/image?url=https%3A%2F%2Fst1.uvnimg.com%2F44%2Fb0%2F2f65cc284773a8d2550a20d960d5%2Flokomotiv.jpg&w=1280&q=75"
+        }
+    ]
+}
