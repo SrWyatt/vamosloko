@@ -1,6 +1,5 @@
 const menuBtn = document.getElementById('menu-btn');
 const dropdownMenu = document.getElementById('dropdown-menu');
-const logoBtn = document.getElementById('logo-btn');
 const postsContainer = document.getElementById('posts-container');
 const searchInput = document.getElementById('search-input');
 const searchBtn = document.getElementById('search-btn');
@@ -82,7 +81,6 @@ function calculateTimezones(dateStr, timeStr) {
         }
 
         let ruString = `${pad(day)}/${pad(month)}/${year} - ${pad(hour)}:${pad(minute)}`;
-
         return { sv: svString, ru: ruString };
 
     } catch (e) {
@@ -90,25 +88,17 @@ function calculateTimezones(dateStr, timeStr) {
     }
 }
 
+// Interfaz e interacciones básicas
 menuBtn.addEventListener('click', () => { dropdownMenu.classList.toggle('active'); });
 
-logoBtn.addEventListener('click', (e) => { e.preventDefault(); navigateTo('/'); });
-
 document.querySelectorAll('.nav-link').forEach(link => {
-    link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const path = new URL(link.href).pathname;
-        navigateTo(path);
+    link.addEventListener('click', () => {
         dropdownMenu.classList.remove('active');
     });
 });
 
-window.addEventListener('popstate', () => { handleRoute(window.location.pathname); });
-
-function navigateTo(path) {
-    window.history.pushState({}, '', path);
-    handleRoute(path);
-}
+// ESCUCHADOR PRINCIPAL DE RUTAS POR HASH
+window.addEventListener('hashchange', handleRoute);
 
 function switchView(viewName) {
     Object.values(views).forEach(v => v.classList.remove('active'));
@@ -117,11 +107,13 @@ function switchView(viewName) {
     headerTitle.style.display = viewName === 'home' ? 'block' : 'none';
 }
 
-function handleRoute(path) {
-    const route = path.replace(/^\/|\/$/g, '');
-    if (route === '') { switchView('home'); return; }
+function handleRoute() {
+    const route = window.location.hash.replace('#', '');
+    
+    if (route === '' || route === '/') { switchView('home'); return; }
     if (/^\d{3}$/.test(route)) { renderPost(route); return; }
     if (pageTemplates[route]) { renderPage(route); return; }
+    
     switchView('home');
 }
 
@@ -133,7 +125,7 @@ function createCardHTML(post) {
     const times = calculateTimezones(post.date, post.time);
 
     return `
-        <a href="/${post.id_str}" class="post-card route-link" data-id="${post.id_str}" data-title="${post.title.toLowerCase()}">
+        <a href="#${post.id_str}" class="post-card" data-title="${post.title.toLowerCase()}" data-id="${post.id_str}">
             <div class="card-img-container">${imgHTML}</div>
             <div class="card-main-content">
                 <h3 class="card-title">${post.title}</h3>
@@ -184,15 +176,10 @@ async function loadPosts() {
     const topPosts = globalPosts.slice(0, 5);
     topPosts.forEach(post => { postsContainer.innerHTML += createCardHTML(post); });
 
-    document.querySelectorAll('.route-link').forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            navigateTo(new URL(link.href).pathname);
-        });
-    });
-
     buildHistorySidebar();
-    handleRoute(window.location.pathname);
+    
+    // Al cargar la página, fuerza a leer la URL actual y cargar la vista correcta
+    handleRoute();
 }
 
 function buildHistorySidebar() {
@@ -213,7 +200,7 @@ function buildHistorySidebar() {
             const shortDate = (nums && nums.length >= 2) ? `${nums[0].padStart(2, '0')}/${nums[1].padStart(2, '0')}` : post.date;
             
             content.innerHTML += `
-                <a href="/${post.id_str}" class="history-item route-link">
+                <a href="#${post.id_str}" class="history-item">
                     <span>#${post.id_str}</span> ${shortDate}
                 </a>
             `;
@@ -226,13 +213,6 @@ function buildHistorySidebar() {
 
         accordion.appendChild(btn);
         accordion.appendChild(content);
-    });
-
-    accordion.querySelectorAll('.route-link').forEach(link => {
-        link.addEventListener('click', (e) => {
-            e.preventDefault();
-            navigateTo(new URL(link.href).pathname);
-        });
     });
 }
 
