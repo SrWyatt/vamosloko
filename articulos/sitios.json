@@ -1,0 +1,40 @@
+
+
+[
+  {
+  "titulo": " 'Elegí ir contra todos.' La historia de un fan de Lokomotiv de El Salvador",
+  "posicion": "1",
+  "sitio": "https://www.sovsport.ru/football/articles/ya-vybral-idti-protiv-vseh-istoriya-fanata-lokomotiva-iz-salvadora",
+  "nombre_sitio": "sovsport.ru",
+  "imagen": "https://cdn.sovsport.prod.plat.agency/foto_fk_lokomotiv_5ea5e779a4.webp"
+  },
+  {
+  "titulo": " 'Lokomotiv tiene un fan de El Salvador: César Montes le invitó a Moscú",
+  "posicion": "2",
+  "sitio": "https://www.sports.ru/football/blogs/3392992.html",
+  "nombre_sitio": "sports.ru",
+  "imagen": "https://raw.githubusercontent.com/SrWyatt/vamosloko/refs/heads/main/img_sitios/sportsru.png"
+  },
+  {
+  "titulo": "El club ruso tiene un aficionado único: el salvadoreño se ahoga por Loko en América",
+  "posicion": "3",
+  "sitio": "https://sport24.ru/football/article-834945-unikalnoye-dostizheniye-kluba-rpl-yego-ne-pereplyunut-zenitu-i-spartaku-za-etu-komandu-boleyut-dazhe-v-salvadore",
+  "nombre_sitio": "sport24.ru",
+  "imagen": "https://cdn-m.sport24.ru/m/84cd/ddb1/c032/4010/b409/3bd0/65da/a5b5/800_10000_max.webp"
+  }
+,
+{
+  "titulo": "Nada especial, solo un hincha salvadoreño del Lokomotiv trolleando a un hincha costarricense del Inter.",
+  "posicion": "4",
+  "sitio": "https://www.facebook.com/photo/?fbid=1356484529856227&set=a.593269596177728",
+  "nombre_sitio": "Facebook: Спорт-Экспресс",
+  "imagen": "https://scontent.fsal5-1.fna.fbcdn.net/v/t39.30808-6/656818361_1356484539856226_6736348526023530962_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=127cfc&_nc_ohc=ZBzPmB7xhtsQ7kNvwGoMt3d&_nc_oc=AdoZBkdp86hu9g3OzQyZ6Z-A7v_xV8LtmrNIbNv6Oim3svUjDABZ88xUM9xoFTmXZ7E&_nc_zt=23&_nc_ht=scontent.fsal5-1.fna&_nc_gid=4N6YOIZjV1W-o6sBAPcFZQ&_nc_ss=7b2a8&oh=00_Af56qx_OcdUgAeNit5m3F_0fuyiz7kUC8GbonY9LQJe3ew&oe=6A1EE9EF"
+  },
+{
+  "titulo": "César Montes dedica unas palabras a una cuenta de aficionados del Lokomotiv en El Salvador.",
+  "posicion": "4",
+  "sitio": "https://www.record.com.mx/historia/cesar-montes-lanza-mensaje-tras-gol-con-lokomotiv-gracias-por-el-apoyo-2026032223125530292",
+  "nombre_sitio": "record.com.mx",
+  "imagen": "https://sportal365images.com/process/smp-images-production/record.mx/22032026/5b490e9c-687a-4753-9169-b645ede462f1.jpeg?operations=crop(6:0:994:556),fit(860:484)&format=webp"
+  }
+]

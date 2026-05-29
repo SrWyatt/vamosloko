@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Generador JSON</title>
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,Helvetica,sans-serif
+}
+
+body{
+background:#111827;
+color:#fff;
+padding:20px;
+min-height:100vh
+}
+
+.container{
+max-width:1600px;
+margin:auto;
+display:grid;
+grid-template-columns:1fr 500px;
+gap:20px
+}
+
+.right{
+display:flex;
+flex-direction:column;
+gap:20px
+}
+
+.panel{
+background:#1f2937;
+border-radius:15px;
+padding:20px;
+border:1px solid #2f3a4b
+}
+
+h1{
+margin-bottom:20px;
+font-size:28px
+}
+
+h2{
+margin-bottom:15px;
+font-size:18px
+}
+
+label{
+display:block;
+margin-top:15px;
+margin-bottom:6px;
+font-size:14px
+}
+
+input,textarea,select{
+width:100%;
+padding:12px;
+border:none;
+border-radius:10px;
+background:#374151;
+color:white;
+outline:none
+}
+
+textarea{
+resize:vertical;
+min-height:100px
+}
+
+.btns{
+display:flex;
+gap:10px;
+margin-top:20px;
+flex-wrap:wrap
+}
+
+button{
+border:none;
+padding:12px 18px;
+border-radius:10px;
+cursor:pointer;
+font-weight:bold
+}
+
+.save{
+background:#16a34a;
+color:white
+}
+
+.previewBtn{
+background:#2563eb;
+color:white
+}
+
+.clear{
+background:#dc2626;
+color:white
+}
+
+.add{
+margin-top:15px;
+width:100%;
+background:#7c3aed;
+color:white
+}
+
+.block{
+margin-top:15px;
+padding:15px;
+background:#374151;
+border-radius:10px;
+position:relative
+}
+
+.remove{
+position:absolute;
+right:10px;
+top:10px;
+background:#dc2626;
+padding:6px 10px;
+color:white
+}
+
+.preview{
+background:#fff;
+color:#111;
+padding:20px;
+border-radius:15px
+}
+
+.preview img{
+width:100%;
+border-radius:10px;
+margin:15px 0
+}
+
+.preview h1{
+color:#111
+}
+
+.preview h3{
+margin-top:15px
+}
+
+.history{
+margin-top:20px;
+max-height:300px;
+overflow:auto
+}
+
+.item{
+padding:10px;
+background:#374151;
+margin-top:8px;
+border-radius:8px
+}
+
+#jsonPreview{
+background:#111827;
+padding:15px;
+border-radius:12px;
+color:#22c55e;
+overflow:auto;
+max-height:450px;
+font-size:13px;
+line-height:1.5;
+white-space:pre-wrap;
+word-break:break-word
+}
+
+@media(max-width:1000px){
+
+.container{
+grid-template-columns:1fr
+}
+
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="panel">
+
+<h1>Generador JSON</h1>
+
+<label>Título</label>
+<input id="title">
+
+<label>Portada URL</label>
+<input id="portada">
+
+<label>Descripción</label>
+<textarea id="desc"></textarea>
+
+<h2 style="margin-top:20px">Contenido</h2>
+
+<div id="bodyContainer"></div>
+
+<button class="add" onclick="addBlock()">+ Agregar bloque</button>
+
+<div class="btns">
+<button class="save" onclick="saveJson()">Guardar</button>
+<button class="previewBtn" onclick="renderPreview()">Vista previa</button>
+<button class="clear" onclick="clearAll()">Limpiar</button>
+</div>
+
+<h2 style="margin-top:30px">Historial</h2>
+
+<div class="history" id="history"></div>
+
+</div>
+
+<div class="right">
+
+<div class="panel">
+
+<h2>Vista previa página</h2>
+
+<div id="preview" class="preview">
+
+<h1>Vista previa</h1>
+
+</div>
+
+</div>
+
+<div class="panel">
+
+<h2>Vista previa JSON</h2>
+
+<pre id="jsonPreview">Esperando datos...</pre>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+let bodyContainer=document.getElementById("bodyContainer")
+let historyBox=document.getElementById("history")
+
+function nextID(){
+
+let n=localStorage.getItem("counter")
+
+if(!n){
+n=1
+}else{
+n=parseInt(n)
+}
+
+return String(n).padStart(3,"0")
+
+}
+
+function increaseID(){
+
+let n=localStorage.getItem("counter")
+
+if(!n){
+n=1
+}else{
+n=parseInt(n)+1
+}
+
+localStorage.setItem("counter",n)
+
+}
+
+function addBlock(){
+
+let div=document.createElement("div")
+
+div.className="block"
+
+div.innerHTML=`
+
+<button class="remove" onclick="this.parentElement.remove()">X</button>
+
+<label>Tipo</label>
+
+<select class="type" onchange="changeInput(this)">
+<option value="subtitulo">Subtítulo</option>
+<option value="parrafo">Párrafo</option>
+<option value="imagen">Imagen</option>
+</select>
+
+<label>Contenido</label>
+
+<textarea class="content"></textarea>
+
+`
+
+bodyContainer.appendChild(div)
+
+}
+
+function changeInput(e){
+
+let area=e.parentElement.querySelector(".content")
+
+if(e.value==="imagen"){
+area.placeholder="https://..."
+}else{
+area.placeholder=""
+}
+
+}
+
+function validate(){
+
+if(!title.value.trim()) return false
+
+if(!portada.value.match(/^https?:\/\/.+/)) return false
+
+if(!desc.value.trim()) return false
+
+return true
+
+}
+
+function generateData(){
+
+let id=nextID()
+
+let blocks=[]
+
+document.querySelectorAll(".block").forEach(x=>{
+
+let type=x.querySelector(".type").value
+let content=x.querySelector(".content").value.trim()
+
+if(content){
+
+blocks.push({
+type:type,
+content:content
+})
+
+}
+
+})
+
+let d=new Date()
+
+let date=d.toLocaleDateString("es-SV")
+
+let time=
+d.getHours().toString().padStart(2,"0")
++":"
++d.getMinutes().toString().padStart(2,"0")
+
+return{
+
+id_str:id,
+title:title.value.trim(),
+portada:portada.value.trim(),
+desc:desc.value.trim(),
+date:date,
+time:time,
+body:blocks
+
+}
+
+}
+
+function renderPreview(){
+
+if(!validate()){
+alert("Completa correctamente todos los campos")
+return
+}
+
+let data=generateData()
+
+let html=`
+
+<h1>${data.title}</h1>
+
+<img src="${data.portada}">
+
+<p>${data.desc}</p>
+
+`
+
+data.body.forEach(x=>{
+
+if(x.type==="subtitulo"){
+html+=`<h3>${x.content}</h3>`
+}
+
+if(x.type==="parrafo"){
+html+=`<p>${x.content}</p>`
+}
+
+if(x.type==="imagen"){
+html+=`<img src="${x.content}">`
+}
+
+})
+
+preview.innerHTML=html
+
+jsonPreview.textContent=
+JSON.stringify(data,null,4)
+
+}
+
+function saveJson(){
+
+if(!validate()){
+alert("Completa correctamente todos los campos")
+return
+}
+
+let data=generateData()
+
+jsonPreview.textContent=
+JSON.stringify(data,null,4)
+
+let blob=new Blob(
+[
+JSON.stringify(data,null,4)
+],
+{
+type:"application/json"
+}
+)
+
+let a=document.createElement("a")
+
+a.href=URL.createObjectURL(blob)
+
+a.download=`${data.id_str}.json`
+
+a.click()
+
+saveHistory(data.id_str)
+
+increaseID()
+
+}
+
+function saveHistory(id){
+
+let history=
+JSON.parse(
+localStorage.getItem("history")
+)||[]
+
+let d=new Date()
+
+let date=
+d.toLocaleDateString("es-SV")
++" "+
+d.getHours().toString().padStart(2,"0")
++":"
++d.getMinutes().toString().padStart(2,"0")
+
+history.unshift(
+`${id}.json - ${date}`
+)
+
+localStorage.setItem(
+"history",
+JSON.stringify(history)
+)
+
+loadHistory()
+
+}
+
+function loadHistory(){
+
+let history=
+JSON.parse(
+localStorage.getItem("history")
+)||[]
+
+historyBox.innerHTML=""
+
+history.forEach(x=>{
+
+historyBox.innerHTML+=`
+<div class="item">${x}</div>
+`
+
+})
+
+}
+
+function clearAll(){
+
+title.value=""
+portada.value=""
+desc.value=""
+bodyContainer.innerHTML=""
+
+preview.innerHTML=
+"<h1>Vista previa</h1>"
+
+jsonPreview.textContent=
+"Esperando datos..."
+
+addBlock()
+
+}
+
+loadHistory()
+
+addBlock()
+
+</script>
+
+</body>
+</html>
