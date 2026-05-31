@@ -15,9 +15,24 @@ let currentSortOrder = 'newToOld';
 let SEASONS_LIST = [];
 let activeSeasonIndex = 0;
 
-if (menuBtn) {
-    menuBtn.addEventListener('click', () => {
+const isInSubfolder = !document.getElementById('view-home') || window.location.pathname.includes('/equipo') || window.location.pathname.includes('/about') || window.location.pathname.includes('/redes');
+const basePath = isInSubfolder ? '../' : '';
+
+const getValidImgSrc = (src) => {
+    if (!src) return '';
+    return (src.startsWith('http://') || src.startsWith('https://')) ? src : `${basePath}${src}`;
+};
+
+if (menuBtn && dropdownMenu) {
+   
+    menuBtn.addEventListener('click', (e) => {
+        e.stopPropagation(); 
         dropdownMenu.classList.toggle('active');
+    });
+    document.addEventListener('click', (e) => {
+        if (!dropdownMenu.contains(e.target) && !menuBtn.contains(e.target)) {
+            dropdownMenu.classList.remove('active');
+        }
     });
 }
 
@@ -59,6 +74,7 @@ function switchView(viewName) {
 }
 
 function handleRoute() {
+    if (!document.getElementById('view-home')) return;
     const route = window.location.hash.replace('#', '');
     if (route === '' || route === '/') {
         switchView('home');
@@ -109,7 +125,7 @@ function calculateTimezones(dateStr, timeStr) {
 
 function createCardHTML(post) {
     const imgHTML = post.portada 
-        ? `<img src="${post.portada}" onerror="this.outerHTML='<div class=\\'no-media\\'>NO MEDIA</div>'">`
+        ? `<img src="${getValidImgSrc(post.portada)}" onerror="this.outerHTML='<div class=\\'no-media\\'>NO MEDIA</div>'">`
         : `<div class="no-media">NO MEDIA</div>`;
     const times = calculateTimezones(post.date, post.time);
     
@@ -126,11 +142,11 @@ function createCardHTML(post) {
             <div class="card-side-info">
                 <span class="card-id">#${post.id_str}</span>
                 <div class="card-date-block">
-                    <img src="icons/sv.webp" alt="SV" class="flag-img">
+                    <img src="${basePath}icons/sv.webp" alt="SV" class="flag-img">
                     <span class="card-date">${times.sv}</span>
                 </div>
                 <div class="card-date-block">
-                    <img src="icons/ru.webp" alt="RU" class="flag-img">
+                    <img src="${basePath}icons/ru.webp" alt="RU" class="flag-img">
                     <span class="card-date">${times.ru}</span>
                 </div>
             </div>
@@ -183,13 +199,13 @@ function renderPost(idStr) {
 
         if(idContainer) idContainer.innerText = `#${post.id_str}`;
         if(dateContainer) dateContainer.innerHTML = `
-            <span><img src="icons/sv.webp" alt="SV" class="flag-img"> ${times.sv}</span>
-            <span><img src="icons/ru.webp" alt="RU" class="flag-img"> ${times.ru}</span>
+            <span><img src="${basePath}icons/sv.webp" alt="SV" class="flag-img"> ${times.sv}</span>
+            <span><img src="${basePath}icons/ru.webp" alt="RU" class="flag-img"> ${times.ru}</span>
         `;
         if(titleContainer) titleContainer.innerText = post.title;
         if(imgContainer) {
             let imgHtml = post.portada 
-                ? `<img src="${post.portada}" onerror="this.outerHTML='<div class=\\'no-media\\'>NO MEDIA</div>'">`
+                ? `<img src="${getValidImgSrc(post.portada)}" onerror="this.outerHTML='<div class=\\'no-media\\'>NO MEDIA</div>'">`
                 : `<div class="no-media">NO MEDIA</div>`;
             
             if (post.portada && post.creditos && post.creditos.trim() !== "") {
@@ -204,7 +220,7 @@ function renderPost(idStr) {
                     if (item.type === 'parrafo') {
                         bodyContainer.innerHTML += `<p>${item.content}</p>`;
                     } else if (item.type === 'imagen') {
-                        let imgItem = `<div class="body-image-wrapper"><img src="${item.content}" onerror="this.style.display='none'">`;
+                        let imgItem = `<div class="body-image-wrapper"><img src="${getValidImgSrc(item.content)}" onerror="this.style.display='none'">`;
                         if (item.creditos && item.creditos.trim() !== "") {
                             imgItem += `<span class="image-credit">${item.creditos}</span>`;
                         }
@@ -307,7 +323,7 @@ async function loadPosts() {
     while (true) {
         const idStr = String(currentFetchId).padStart(3, '0');
         try {
-            const res = await fetch(`entrada/${idStr}.json?t=${Date.now()}`);
+            const res = await fetch(`${basePath}entrada/${idStr}.json?t=${Date.now()}`);
             if (!res.ok) break;
             const data = await res.json();
             if (!data || !data.id_str) break;
@@ -331,12 +347,12 @@ async function loadPosts() {
 }
 
 async function loadAvailableSeasons() {
-    SEASONS_LIST = [{ label: "Actual", dataPath: "equipo/cifras.json" }];
+    SEASONS_LIST = [{ label: "Actual", dataPath: `${basePath}equipo/cifras.json` }];
     const currentYear = new Date().getFullYear();
     
     for (let y = currentYear + 1; y >= 2023; y--) {
         const label = `${y}-${y + 1}`;
-        const path = `equipo/historial/${label}.json`;
+        const path = `${basePath}equipo/historial/${label}.json`;
         try {
             const res = await fetch(path);
             if (res.ok) {
@@ -363,15 +379,12 @@ async function loadDashboard(idx = activeSeasonIndex) {
                 const fullData = await resData.json();
                 data = fullData;
                 dataPlayers = fullData;
-            } else {
-                console.warn("No se pudo obtener el archivo JSON consolidado.");
             }
         } catch (e) {
-            console.error("Error al cargar los datos:", e);
         }
 
         const clubName = data?.club?.nombre || data?.club?.nombre_club || data?.nombre || "Lokomotiv";
-        const clubLogo = data?.club?.logo || data?.logo || "escudos/loko.webp";
+        const clubLogo = data?.club?.logo ? getValidImgSrc(data.club.logo) : (data?.logo ? getValidImgSrc(data.logo) : getValidImgSrc('escudos/loko.webp'));
         
         const stats = data?.estadisticas || data?.estadísticas || {};
         const partidos = stats?.partidos || {};
@@ -425,7 +438,7 @@ async function loadDashboard(idx = activeSeasonIndex) {
             `;
         }).join('');
 
-        const getLogo = src => src && src.trim() !== "" ? `<img src="${src}" alt="Logo">` : `<div class="match-no-logo">NO MEDIA</div>`;
+        const getLogo = src => src && src.trim() !== "" ? `<img src="${getValidImgSrc(src)}" alt="Logo">` : `<div class="match-no-logo">NO MEDIA</div>`;
 
         const renderMatch = (title, md, isPrev) => {
             if (!md) return '';
@@ -529,7 +542,7 @@ async function loadDashboard(idx = activeSeasonIndex) {
             }
 
             const foto = player.foto 
-                ? `<img src="${player.foto}" alt="Foto">` 
+                ? `<img src="${getValidImgSrc(player.foto)}" alt="Foto">` 
                 : `<div style="width:100%;height:100%;color:#e33046;display:flex;align-items:center;justify-content:center;border:2px dashed #171718;">NO MEDIA</div>`;
 
             let statsHTML = '';
@@ -557,7 +570,7 @@ async function loadDashboard(idx = activeSeasonIndex) {
                 ${badgesHTML}
                 <div class="player-photo">${foto}</div>
                 <div class="player-name-container">
-                    ${player.pais ? `<img src="${player.pais}" class="player-flag">` : ''}
+                    ${player.pais ? `<img src="${getValidImgSrc(player.pais)}" class="player-flag">` : ''}
                     <span class="player-name">${player.nombre}</span>
                 </div>
                 <div class="player-stats-grid">${statsHTML}</div>
@@ -764,29 +777,44 @@ document.addEventListener('click', e => {
     }
 });
 
-async function loadGallery() {
-    const container = document.getElementById('gallery-container');
-    if (!container) return;
+async function cargarFooter() {
     try {
-        const res = await fetch(`articulos/sitios.json?t=${Date.now()}`);
-        if (!res.ok) return;
-        const data = await res.json();
-        data.sort((a, b) => parseInt(a.posicion, 10) - parseInt(b.posicion, 10));
-        container.innerHTML = data.map(item => `
-            <div class="gallery-card">
-                <div class="gallery-img-container">
-                    <img src="${item.imagen}" onerror="this.outerHTML='<div class=\\'no-media\\'>NO MEDIA</div>'">
-                    <a href="${item.sitio}" target="_blank" class="gallery-btn">
-                        Ver sitio <span class="svg-icon icon-arrow-top-right" style="width:16px;height:16px;background-color:#fcfcfc;"></span>
-                    </a>
-                </div>
-                <div class="gallery-content">
-                    <h3 class="gallery-card-title">${item.titulo}</h3>
-                </div>
-            </div>
-        `).join('');
-    } catch (e) {
-        console.error(e);
+        const response = await fetch(`${basePath}footer.html`);
+        if (!response.ok) throw new Error('No se pudo cargar el footer');
+        
+        const footerHTML = await response.text();
+        const placeholder = document.getElementById('footer-placeholder');
+        
+        if (placeholder) {
+            placeholder.innerHTML = footerHTML;
+            inicializarEventosFooter();
+        }
+    } catch (error) {
+        console.error('Error cargando el footer:', error);
+    }
+}
+
+function inicializarEventosFooter() {
+    const termsBtn = document.getElementById('btn-terms');
+    const termsOverlay = document.getElementById('termsOverlay');
+    const termsClose = document.getElementById('termsClose');
+
+    if (termsBtn && termsOverlay && termsClose) {
+        termsBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            termsOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden'; 
+        });
+        termsClose.addEventListener('click', () => {
+            termsOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+        termsOverlay.addEventListener('click', (e) => {
+            if (e.target === termsOverlay) {
+                termsOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
     }
 }
 
@@ -799,9 +827,8 @@ async function init() {
         await loadAvailableSeasons();
         loadDashboard(activeSeasonIndex);
     }
-    if (document.getElementById('gallery-container')) {
-        loadGallery();
-    }
+    
+    await cargarFooter();
 }
 
 if (document.readyState === 'loading') {
