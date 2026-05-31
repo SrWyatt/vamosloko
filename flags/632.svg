@@ -1,0 +1,27 @@
+<svg width="24" height="16" viewBox="0 0 24 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_10884_446621)">
+<mask id="mask0_10884_446621" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="16">
+<rect width="24" height="16" fill="white"/>
+</mask>
+<g mask="url(#mask0_10884_446621)">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M0 0V16H24V0H0Z" fill="#FECA00"/>
+<mask id="mask1_10884_446621" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="16">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M0 0V16H24V0H0Z" fill="white"/>
+</mask>
+<g mask="url(#mask1_10884_446621)">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M0 0V5.33333H24V0H0Z" fill="#DB501C"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M0 10.6666V16H24V10.6666H0Z" fill="#5EAA22"/>
+<path d="M8.73561 7.50671C8.73561 7.50671 8.4567 10.0461 10.9958 10.0461C13.535 10.0461 12.8886 10.0461 12.8886 10.0461C12.8886 10.0461 15.5597 9.89122 15.2496 7.50671" stroke="#DB501C" stroke-width="0.9375"/>
+<path d="M12 6.33545C13.0372 6.33545 13.7812 7.07139 13.7812 7.8667C13.7812 8.66201 13.0372 9.39795 12 9.39795C10.9628 9.39795 10.2188 8.66201 10.2188 7.8667C10.2188 7.07139 10.9628 6.33545 12 6.33545Z" fill="#FECA00" stroke="#68B9E8" stroke-width="0.9375"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12 7.99996C12.4142 7.99996 12.75 7.70148 12.75 7.33329C12.75 6.9651 12.4142 6.66663 12 6.66663C11.5858 6.66663 11.25 6.9651 11.25 7.33329C11.25 7.70148 11.5858 7.99996 12 7.99996Z" fill="#DB501C"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12.075 9.06667C12.7792 9.06667 13.35 8.82789 13.35 8.53333C13.35 8.23878 12.7792 8 12.075 8C11.3709 8 10.8 8.23878 10.8 8.53333C10.8 8.82789 11.3709 9.06667 12.075 9.06667Z" fill="#5EAA22"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M12.0751 6.66664C13.0693 6.66664 13.8751 6.42786 13.8751 6.13331C13.8751 5.83876 13.0693 5.59998 12.0751 5.59998C11.081 5.59998 10.2751 5.83876 10.2751 6.13331C10.2751 6.42786 11.081 6.66664 12.0751 6.66664Z" fill="#674F28"/>
+</g>
+</g>
+</g>
+<defs>
+<clipPath id="clip0_10884_446621">
+<rect width="24" height="16" rx="1" fill="white"/>
+</clipPath>
+</defs>
+</svg>
