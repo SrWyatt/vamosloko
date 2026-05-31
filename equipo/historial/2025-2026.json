@@ -1,7 +1,7 @@
 {
     "club": {
         "nombre": "FC Lokomotiv Moscú",
-        "logo": "escudos/loko.webp"
+        "logo": "https://raw.githubusercontent.com/SrWyatt/vamosloko/refs/heads/main/escudos/loko.webp"
 
     },
     "estadisticas": {
@@ -43,7 +43,7 @@
         },
         {
             "resultado": "E",
-            "partido": "Lokomotiv 1 - 0 Dinamo Moscú",
+            "partido": "Lokomotiv 1 - 1 Dinamo Moscú",
             "fecha": "01/05/2026"
         },
         {
@@ -54,7 +54,7 @@
     ],
     "anterior": {
         "rival": "CSKA Moscú",
-        "logo": "https://upload.wikimedia.org/wikipedia/sco/thumb/2/26/PFK_CSKA_Logo.svg/1920px-PFK_CSKA_Logo.svg.png",
+        "logo": "https://raw.githubusercontent.com/SrWyatt/vamosloko/refs/heads/main/escudos/cska.webp",
         "marcador": "3-1",
         "local": false,
         "fecha": "17/05/2026",
@@ -85,7 +85,7 @@
         "minutos_jugados": 2494,
         "partidos_jugados": 28,
         "foto": "https://cdn.premierliga.ru/resources/sportbase/playerApplication/46935/28835_2025_500_46935.png",
-        "pais": "https://cdn.premierliga.ru/resources/images/flag/2.svg",
+        "pais": "flags/2.svg",
         "portero": false,
         "porterias_a_cero": 7
     },
@@ -100,7 +100,7 @@
         "partidos_jugados": 28,
         "minutos_jugados": 2494,
         "foto": "https://cdn.premierliga.ru/resources/sportbase/playerApplication/46935/28835_2025_500_46935.png",
-        "pais": "https://cdn.premierliga.ru/resources/images/flag/2.svg",
+        "pais": "flags/2.svg",
         "portero": false,
         "porterias_a_cero": 7
     },
@@ -115,7 +115,7 @@
         "goles": 0,
         "penales_convertidos": 0,
         "foto": "https://cdn.premierliga.ru/resources/sportbase/playerApplication/46949/11077_2025_500_46949.png",
-        "pais": "https://cdn.premierliga.ru/resources/images/flag/2.svg",
+        "pais": "flags/2.svg",
         "portero": true,
         "porterias_a_cero": 7
     }
