@@ -20,11 +20,28 @@ const basePath = isInSubfolder ? '../' : '';
 
 const getValidImgSrc = (src) => {
     if (!src) return '';
-    return (src.startsWith('http://') || src.startsWith('https://')) ? src : `${basePath}${src}`;
+    if (src.startsWith('http://') || src.startsWith('https://')) {
+        return src;
+    }
+    if (src.includes('hb.bizmrg.com') || src.includes('.com') || src.includes('.net') || src.includes('.org')) {
+        return src.startsWith('//') ? `https:${src}` : `https://${src}`;
+    }
+    return `${basePath}${src}`;
 };
 
+const videoObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        const video = entry.target;
+        if (entry.isIntersecting) {
+            video.muted = true;
+            video.play().catch(() => {});
+        } else {
+            video.pause();
+        }
+    });
+}, { threshold: 0.5 });
+
 if (menuBtn && dropdownMenu) {
-   
     menuBtn.addEventListener('click', (e) => {
         e.stopPropagation(); 
         dropdownMenu.classList.toggle('active');
@@ -220,7 +237,16 @@ function renderPost(idStr) {
                     if (item.type === 'parrafo') {
                         bodyContainer.innerHTML += `<p>${item.content}</p>`;
                     } else if (item.type === 'imagen') {
-                        let imgItem = `<div class="body-image-wrapper"><img src="${getValidImgSrc(item.content)}" onerror="this.style.display='none'">`;
+                        let mediaUrl = getValidImgSrc(item.content);
+                        let isVideo = /\.(mp4|webm|ogg)($|\?)/i.test(mediaUrl);
+                        let imgItem = `<div class="body-image-wrapper">`;
+                        
+                        if (isVideo) {
+                            imgItem += `<video src="${mediaUrl}" controls muted loop playsinline style="width:100%; height:auto; display:block; max-width:100%;" class="observed-video" onerror="this.style.display='none'"></video>`;
+                        } else {
+                            imgItem += `<img src="${mediaUrl}" onerror="this.style.display='none'">`;
+                        }
+                        
                         if (item.creditos && item.creditos.trim() !== "") {
                             imgItem += `<span class="image-credit">${item.creditos}</span>`;
                         }
@@ -229,6 +255,10 @@ function renderPost(idStr) {
                     } else if (item.type === 'subtitulo') {
                         bodyContainer.innerHTML += `<h3>${item.content}</h3>`;
                     }
+                });
+
+                document.querySelectorAll('.observed-video').forEach(video => {
+                    videoObserver.observe(video);
                 });
             }
         }
@@ -370,7 +400,7 @@ async function loadDashboard(idx = activeSeasonIndex) {
     if (!wrapper) return;
 
     try {
-        let data = { club: {}, estadisticas: { partidos: {}, goles: {} }, tabla: {}, ultimosEnfrentamientos: [] };
+        let data = { club: {}, estadísticas: { partidos: {}, goles: {} }, tabla: {}, ultimosEnfrentamientos: [] };
         let dataPlayers = null;
 
         try {
